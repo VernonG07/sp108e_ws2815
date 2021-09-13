@@ -123,9 +123,9 @@ class WifiLedShopLight(LightEntity):
         self.set_brightness(kwargs[ATTR_BRIGHTNESS])
         return
 
-    if ATTR_WHITE_VALUE in kwargs:
-        self.set_white(kwargs[ATTR_WHITE_VALUE])
-        return
+    # if ATTR_WHITE_VALUE in kwargs:
+    #     self.set_white(kwargs[ATTR_WHITE_VALUE])
+    #     return
 
     if ATTR_HS_COLOR in kwargs:
         r,g,b = color_util.color_hs_to_RGB(*kwargs[ATTR_HS_COLOR])
@@ -190,6 +190,8 @@ class WifiLedShopLight(LightEntity):
         try:
             self._sock.connect((self._ip, self._port))
             self._sock.sendall(bytes(raw_data))
+            if command == command.TOGGLE:
+                self._sock.recv(1024)
             if command == command.GET_ID or command == command.SYNC:
                 result = self._sock.recv(1024)
 
